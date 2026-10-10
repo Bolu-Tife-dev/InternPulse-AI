@@ -3,6 +3,10 @@
 
 generator client {
   provider = "prisma-client-js"
+  // Custom output outside node_modules so electron-builder reliably
+  // packages the generated client (node_modules/.prisma is a phantom
+  // dependency and gets pruned from the asar).
+  output   = "./generated/client"
 }
 
 datasource db {

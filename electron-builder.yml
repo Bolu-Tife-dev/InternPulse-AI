@@ -9,12 +9,17 @@ files:
   - package.json
   - prisma/schema.prisma
   - prisma/migrations/**
+  # Prisma client with a custom generator output (see prisma/schema.prisma).
+  # Packaging it from a real folder avoids the node_modules/.prisma phantom
+  # dependency problem that crashes the packaged app with
+  # "Cannot find module '.prisma/client/default'".
+  - prisma/generated/**
   - "!**/*.map"
   - "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md}"
 asar: true
 asarUnpack:
   - "**/node_modules/@prisma/**"
-  - "**/node_modules/.prisma/**"
+  - "**/prisma/generated/**"
   - "**/node_modules/playwright/**"
   - "**/node_modules/playwright-core/**"
   - "**/node_modules/pdf-parse/**"

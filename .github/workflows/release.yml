@@ -67,8 +67,8 @@ jobs:
           files: release/*.exe
           fail_on_unmatched_files: true
 
-  build-macos:
-    name: macOS (DMG)
+  build-macos-arm64:
+    name: macOS ARM64 (DMG)
     runs-on: macos-latest
     timeout-minutes: 60
     steps:
@@ -97,18 +97,58 @@ jobs:
           fi
 
       - name: Package DMG (unsigned until an Apple cert is configured)
-        run: npx electron-builder --mac --publish never
+        run: npx electron-builder --mac dmg --arm64 --publish never
         env:
-          # Skip keychain cert discovery so the build succeeds without an
-          # Apple Developer ID certificate. Removed automatically once
-          # CSC_LINK is exported by the previous step.
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          files: release/*.dmg
+          files: release/*-mac-arm64.dmg
+          fail_on_unmatched_files: true
+
+  build-macos-x64:
+    name: macOS Intel (DMG)
+    # macos-15-intel is the last x86_64 GitHub-hosted image (supported until Aug 2027).
+    # Building on a native Intel runner ensures the Prisma query engine matches the arch.
+    runs-on: macos-15-intel
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build renderer + main
+        run: npm run build
+
+      - name: Configure signing (optional)
+        shell: bash
+        env:
+          CERT_LINK: ${{ secrets.APPLE_CERT_LINK }}
+          CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        run: |
+          if [ -n "$CERT_LINK" ]; then
+            echo "CSC_LINK=$CERT_LINK" >> "$GITHUB_ENV"
+            echo "CSC_KEY_PASSWORD=$CERT_PASSWORD" >> "$GITHUB_ENV"
+          fi
+
+      - name: Package DMG (unsigned until an Apple cert is configured)
+        run: npx electron-builder --mac dmg --x64 --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: release/*-mac-x64.dmg
           fail_on_unmatched_files: true
 
   build-linux:

@@ -1,8 +1,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { PrismaClient, Setting } from '@prisma/client';
+import type { PrismaClient, Setting } from '../prisma/generated/client';
 import { logLine } from './env';
 import { databaseUrl, migrationsDir } from './paths';
+
+// The generated Prisma client is loaded at runtime from the COMPILED file
+// location (dist/main/electron/db.js), which is one directory level deeper
+// than this source file — tsc does not rewrite relative import paths, so
+// the static import above is type-only and the require below resolves the
+// real runtime path in both dev and the packaged asar.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { PrismaClient: PrismaClientCtor } = require('../../../prisma/generated/client') as {
+  PrismaClient: new (options?: { log?: ('warn' | 'error')[] }) => PrismaClient;
+};
 
 /** Splits a SQLite migration script into individual statements (quote aware). */
 export function splitSqlStatements(script: string): string[] {
@@ -85,7 +95,7 @@ let client: PrismaClient | null = null;
 export async function getDb(): Promise<PrismaClient> {
   if (client) return client;
   process.env.DATABASE_URL = databaseUrl();
-  client = new PrismaClient({ log: ['warn', 'error'] });
+  client = new PrismaClientCtor({ log: ['warn', 'error'] });
   await applyPendingMigrations(client);
   await client.$connect();
   return client;

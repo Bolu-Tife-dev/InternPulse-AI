@@ -36,3 +36,6 @@ Thumbs.db
 coverage/
 playwright-report/
 test-results/
+
+# Prisma generated client (created by postinstall / prisma generate)
+prisma/generated/
