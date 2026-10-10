@@ -34,13 +34,19 @@ jobs:
       - name: Build renderer + main
         run: npm run build
 
+      - name: Configure signing (optional)
+        shell: bash
+        env:
+          CERT_LINK: ${{ secrets.WIN_CSC_LINK }}
+          CERT_PASSWORD: ${{ secrets.WIN_CSC_PASSWORD }}
+        run: |
+          if [ -n "$CERT_LINK" ]; then
+            echo "CSC_LINK=$CERT_LINK" >> "$GITHUB_ENV"
+            echo "CSC_KEY_PASSWORD=$CERT_PASSWORD" >> "$GITHUB_ENV"
+          fi
+
       - name: Package installer
         run: npx electron-builder --win --publish never
-        env:
-          # Optional: set WIN_CSC_LINK (base64 PFX) + WIN_CSC_PASSWORD repo
-          # secrets to produce a signed installer. Empty = unsigned build.
-          CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_PASSWORD }}
 
       - name: Verify Authenticode signature
         shell: pwsh
@@ -79,16 +85,24 @@ jobs:
       - name: Build renderer + main
         run: npm run build
 
+      - name: Configure signing (optional)
+        shell: bash
+        env:
+          CERT_LINK: ${{ secrets.APPLE_CERT_LINK }}
+          CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        run: |
+          if [ -n "$CERT_LINK" ]; then
+            echo "CSC_LINK=$CERT_LINK" >> "$GITHUB_ENV"
+            echo "CSC_KEY_PASSWORD=$CERT_PASSWORD" >> "$GITHUB_ENV"
+          fi
+
       - name: Package DMG (unsigned until an Apple cert is configured)
         run: npx electron-builder --mac --publish never
         env:
           # Skip keychain cert discovery so the build succeeds without an
-          # Apple Developer ID certificate. Remove once CSC_LINK is set.
+          # Apple Developer ID certificate. Removed automatically once
+          # CSC_LINK is exported by the previous step.
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
-          # Optional: set APPLE_CERT_LINK / APPLE_CERT_PASSWORD secrets
-          # (Developer ID Application .p12) to sign + notarize.
-          CSC_LINK: ${{ secrets.APPLE_CERT_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
