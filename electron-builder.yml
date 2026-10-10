@@ -1,0 +1,53 @@
+appId: ai.internpulse.desktop
+productName: InternPulse AI
+copyright: Copyright © 2026 InternPulse AI
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/**
+  - package.json
+  - prisma/schema.prisma
+  - prisma/migrations/**
+  - "!**/*.map"
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md}"
+asar: true
+asarUnpack:
+  - "**/node_modules/@prisma/**"
+  - "**/node_modules/.prisma/**"
+  - "**/node_modules/playwright/**"
+  - "**/node_modules/playwright-core/**"
+  - "**/node_modules/pdf-parse/**"
+  - "**/node_modules/mammoth/**"
+  - "**/node_modules/cheerio/**"
+  - "**/node_modules/parse5/**"
+  - "**/node_modules/@azure/msal-node/**"
+# No native modules need ABI rebuilds: Prisma ships prebuilt query engines and
+# Playwright drives an external Chromium, so rebuilding for Electron is skipped.
+npmRebuild: false
+electronVersion: 33.4.11
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  artifactName: ${productName}-${version}-setup.${ext}
+  icon: build/icon.ico
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+mac:
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+  category: public.app-category.productivity
+  hardenedRuntime: false
+  gatekeeperAssess: false
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+  category: Utility
+  synopsis: Remote software engineering internship discovery and auto-apply
+publish: null

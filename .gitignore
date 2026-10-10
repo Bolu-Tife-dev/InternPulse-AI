@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# builds
+dist/
+release/
+out/
+*.tsbuildinfo
+
+# prisma local db
+prisma/*.db
+prisma/*.db-journal
+*.sqlite
+*.sqlite3
+
+# runtime data (user uploads, browser profiles, logs)
+userData/
+.runtime/
+logs/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# editors / os
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# testing
+coverage/
+playwright-report/
+test-results/

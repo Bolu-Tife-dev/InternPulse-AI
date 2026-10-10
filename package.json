@@ -1,0 +1,62 @@
+{
+  "name": "internpulse-ai",
+  "productName": "InternPulse AI",
+  "version": "1.0.0",
+  "description": "Localized, automated remote software engineering internship discovery, tailored auto-apply and application-tracking desktop platform.",
+  "author": {
+    "name": "InternPulse AI",
+    "email": "hello@internpulse.ai"
+  },
+  "license": "MIT",
+  "private": false,
+  "main": "dist/main/electron/main.js",
+  "scripts": {
+    "postinstall": "prisma generate",
+    "dev": "npm run build:main && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 concurrently -k -n vite,tsc,electron \"vite\" \"tsc -p tsconfig.main.json -w\" \"wait-on tcp:127.0.0.1:5173 && electron .\"",
+    "build": "npm run build:renderer && npm run build:main",
+    "build:renderer": "vite build",
+    "build:main": "tsc -p tsconfig.main.json",
+    "typecheck": "tsc -p tsconfig.main.json --noEmit && tsc -p tsconfig.json --noEmit",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "playwright:install": "playwright install chromium",
+    "smoke": "node scripts/smoke-test.js",
+    "start": "electron .",
+    "dist": "npm run build && electron-builder --publish never",
+    "dist:win": "npm run build && electron-builder --win --publish never",
+    "dist:mac": "npm run build && electron-builder --mac --publish never",
+    "dist:linux": "npm run build && electron-builder --linux --publish never"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^2.16.3",
+    "@google/genai": "^1.9.0",
+    "@prisma/client": "^6.16.2",
+    "cheerio": "^1.1.2",
+    "mammoth": "^1.11.0",
+    "nodemailer": "^7.0.9",
+    "pdf-parse": "^1.1.1",
+    "playwright": "^1.54.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "@types/nodemailer": "^7.0.4",
+    "@types/pdf-parse": "^1.1.5",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.6.1",
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^33.4.11",
+    "electron-builder": "^26.0.12",
+    "prisma": "^6.16.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3",
+    "vite": "^5.4.19",
+    "wait-on": "^8.0.3"
+  }
+}
