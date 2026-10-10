@@ -1,6 +1,6 @@
-﻿# InternPulse AI
+# InternPulse AI
 
-**Localized, automated remote software-engineering internship discovery, tailored auto-apply, and application tracking â€” for Nigerian citizens and global remote developers.**
+**Localized, automated remote software-engineering internship discovery, tailored auto-apply, and application tracking — for Nigerian citizens and global remote developers.**
 
 InternPulse AI is a production desktop application (Electron + React + TypeScript + Tailwind) with a complete local backend: SQLite via Prisma, live job scraping, local PDF/DOCX parsing, Playwright form automation, Gmail-free SMTP / Microsoft Graph email delivery, Google Gemini cover-letter tuning, and Outlook inbox synchronisation that auto-classifies employer replies.
 
@@ -34,7 +34,7 @@ No mock data. No hardcoded job arrays. Every listing, application, and email row
 - Upload CV/Resume and base cover letters (`.pdf`, `.docx`).
 - Text is parsed **on-device** with `pdf-parse` and `mammoth`.
 - A local extractor pulls email, phone, LinkedIn, GitHub, portfolio, location, headline, summary, years of experience, skills (300+ term lexicon), projects, and languages into SQLite.
-- Parsed values only fill *empty* profile fields â€” manual edits are never overwritten. Every field stays editable in the UI.
+- Parsed values only fill *empty* profile fields — manual edits are never overwritten. Every field stays editable in the UI.
 
 ### 2. Free job scraping & search engine
 Live, free sources (no paid job APIs):
@@ -44,7 +44,7 @@ Live, free sources (no paid job APIs):
 | Jobicy | `https://jobicy.com/api/v2/remote-jobs` |
 | Remotive | `https://remotive.com/api/remote-jobs` |
 | Jooble | `https://jooble.org/api/<key>` (free developer key) |
-| Greenhouse | `boards-api.greenhouse.io` (two-phase: light listing â†’ full content for intern matches) |
+| Greenhouse | `boards-api.greenhouse.io` (two-phase: light listing → full content for intern matches) |
 | Lever | `api.lever.co/v0/postings/<company>` |
 | Ashby | `api.ashbyhq.com/posting-api/job-board/<board>` |
 | Workday | `*.wd5.myworkdayjobs.com/wday/cxs/...` search feed |
@@ -52,12 +52,12 @@ Live, free sources (no paid job APIs):
 
 **Strict matching rules (all must pass):**
 
-- **Role type** â€” Internship, graduate trainee, junior/entry-level, co-op, new grad.
-- **Domain** â€” Frontend, full-stack, backend, web, software/ML/data engineering (non-tech titles such as sales, HR, marketing, design, PM are rejected).
-- **Remote policy** â€” explicit remote / WFH / worldwide signals; in-office and hybrid roles are rejected.
-- **Region eligibility** â€” the description and location are classified as `WORLDWIDE`, `AFRICA_EMEA`, `NIGERIA_EXPLICIT`, `RESTRICTED`, or `UNKNOWN`. Roles restricted to US/EU/UK tax residency (or "remote within the US") are excluded unless Nigerian/global remote contractors are explicitly welcomed.
+- **Role type** — Internship, graduate trainee, junior/entry-level, co-op, new grad.
+- **Domain** — Frontend, full-stack, backend, web, software/ML/data engineering (non-tech titles such as sales, HR, marketing, design, PM are rejected).
+- **Remote policy** — explicit remote / WFH / worldwide signals; in-office and hybrid roles are rejected.
+- **Region eligibility** — the description and location are classified as `WORLDWIDE`, `AFRICA_EMEA`, `NIGERIA_EXPLICIT`, `RESTRICTED`, or `UNKNOWN`. Roles restricted to US/EU/UK tax residency (or "remote within the US") are excluded unless Nigerian/global remote contractors are explicitly welcomed.
 
-Everything that passes is upserted into SQLite (`source + sourceId` unique key â‡’ re-running a search refreshes, never duplicates).
+Everything that passes is upserted into SQLite (`source + sourceId` unique key ⇒ re-running a search refreshes, never duplicates).
 
 ### 3. Interactive preview, filtering & approval dashboard
 - Data grid: company, title, tech-stack tags, salary/stipend, regional eligibility, application method (ATS form vs. email), and match score.
@@ -67,16 +67,16 @@ Everything that passes is upserted into SQLite (`source + sourceId` unique key �
 - Single **Approve & Trigger Auto-Apply** button for the selected rows.
 
 ### 4. Automated application engine
-- **Web forms** â€” a Playwright agent drives Greenhouse, Lever, Ashby, BambooHR and Workday application forms: name/email/phone/LinkedIn/GitHub/portfolio, select dropdowns (location), CV upload, and free-text custom questions. ATS-specific field IDs are used first, with label/name/placeholder heuristics as fallback. Confirmation text, confirmation numbers and screenshots are captured.
-- **Email** â€” when a posting specifies an email application, a personalised email (subject, body, attached CV) is sent over SMTP (any provider) or Microsoft Graph `/me/sendMail`.
-- **AI customisation** â€” Google Gemini (default `gemini-1.5-flash`, overridable) tailors the cover letter and answers form questions using the job description + your profile, with a deterministic fallback to your stored cover letter if the API is unavailable.
-- **Rate limiting** â€” configurable delay between applications (default 8 s), optional visible/headless browser.
+- **Web forms** — a Playwright agent drives Greenhouse, Lever, Ashby, BambooHR and Workday application forms: name/email/phone/LinkedIn/GitHub/portfolio, select dropdowns (location), CV upload, and free-text custom questions. ATS-specific field IDs are used first, with label/name/placeholder heuristics as fallback. Confirmation text, confirmation numbers and screenshots are captured.
+- **Email** — when a posting specifies an email application, a personalised email (subject, body, attached CV) is sent over SMTP (any provider) or Microsoft Graph `/me/sendMail`.
+- **AI customisation** — Google Gemini (default `gemini-1.5-flash`, overridable) tailors the cover letter and answers form questions using the job description + your profile, with a deterministic fallback to your stored cover letter if the API is unavailable.
+- **Rate limiting** — configurable delay between applications (default 8 s), optional visible/headless browser.
 
 ### 5. Applied jobs tracker & Outlook integration
-- Tracker grid: company, role, applied date, strategy (FORM/EMAIL), status (`Applied`, `Screening`, `Interview`, `Offer`, `Rejected`, â€¦) with manual override.
+- Tracker grid: company, role, applied date, strategy (FORM/EMAIL), status (`Applied`, `Screening`, `Interview`, `Offer`, `Rejected`, …) with manual override.
 - Microsoft OAuth 2.0 **device-code flow** (`@azure/msal-node`) with `User.Read`, `Mail.Read`, `Mail.Send`; token cache persisted locally.
 - Periodic (configurable) inbox scan matches messages against companies/titles in the `Application` table.
-- Zero-cost rule-based classification tags each reply: **Application Acknowledged**, **Assessment Sent**, **Interview Requested**, **Rejection Notice**, **Offer** â€” with sentiment and confidence. Statuses are promoted automatically (e.g. interview mail â‡’ `INTERVIEW`).
+- Zero-cost rule-based classification tags each reply: **Application Acknowledged**, **Assessment Sent**, **Interview Requested**, **Rejection Notice**, **Offer** — with sentiment and confidence. Statuses are promoted automatically (e.g. interview mail ⇒ `INTERVIEW`).
 - The email timeline appears in the job detail modal.
 
 ---
@@ -84,30 +84,30 @@ Everything that passes is upserted into SQLite (`source + sourceId` unique key �
 ## Architecture
 
 ```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Electron main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  ipc/ (typed IPC handlers)        services/                           â”‚
-â”‚   â”œâ”€ documents (upload/parse)      â”œâ”€ documentStore (pdf-parse/mammoth)â”‚
-â”‚   â”œâ”€ jobs (search/list/approve)    â”œâ”€ profileExtractor + skillLexicon  â”‚
-â”‚   â”œâ”€ applications (auto-apply)     â”œâ”€ matcher (role/domain/region)     â”‚
-â”‚   â”œâ”€ outlook (OAuth + sync)        â”œâ”€ scrape/* (Jobicy, Remotive,      â”‚
-â”‚   â”œâ”€ settings / stats / ai           Jooble, Greenhouse, Lever, Ashby, â”‚
-â”‚   â””â”€ scheduler (periodic sync)       Workday, Playwright ATS crawlers) â”‚
-â”‚                                    â”œâ”€ apply/formAgent (Playwright)     â”‚
-â”‚                                    â”œâ”€ apply/emailAgent (SMTP/Graph)    â”‚
-â”‚                                    â”œâ”€ gemini (cover letters/answers)   â”‚
-â”‚                                    â””â”€ outlook (MSAL + Graph)           â”‚
-â”‚  Prisma Client â†’ SQLite (userData/internpulse/internpulse.db)          â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–²â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                â”‚ contextBridge (window.internpulse)
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  Renderer: React 19 + TypeScript + Tailwind (Vite)                     â”‚
-â”‚  Dashboard Â· Discover (grid + preview + approve) Â· Applications        â”‚
-â”‚  Profile & CV Â· Settings                                               â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+┌──────────────────────────── Electron main ────────────────────────────┐
+│  ipc/ (typed IPC handlers)        services/                           │
+│   ├─ documents (upload/parse)      ├─ documentStore (pdf-parse/mammoth)│
+│   ├─ jobs (search/list/approve)    ├─ profileExtractor + skillLexicon  │
+│   ├─ applications (auto-apply)     ├─ matcher (role/domain/region)     │
+│   ├─ outlook (OAuth + sync)        ├─ scrape/* (Jobicy, Remotive,      │
+│   ├─ settings / stats / ai           Jooble, Greenhouse, Lever, Ashby, │
+│   └─ scheduler (periodic sync)       Workday, Playwright ATS crawlers) │
+│                                    ├─ apply/formAgent (Playwright)     │
+│                                    ├─ apply/emailAgent (SMTP/Graph)    │
+│                                    ├─ gemini (cover letters/answers)   │
+│                                    └─ outlook (MSAL + Graph)           │
+│  Prisma Client → SQLite (userData/internpulse/internpulse.db)          │
+└───────────────────────────────▲───────────────────────────────────────┘
+                                │ contextBridge (window.internpulse)
+┌───────────────────────────────┴───────────────────────────────────────┐
+│  Renderer: React 19 + TypeScript + Tailwind (Vite)                     │
+│  Dashboard · Discover (grid + preview + approve) · Applications        │
+│  Profile & CV · Settings                                               │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
 - **Renderer security**: `contextIsolation: true`, `nodeIntegration: false`, allow-listed IPC channels only.
-- **Main process** is compiled with `tsc` (CommonJS) so native/prebuilt binaries (`@prisma/client`, `playwright`, `mammoth`, `nodemailer`) resolve normally at runtime â€” no bundler surprises.
+- **Main process** is compiled with `tsc` (CommonJS) so native/prebuilt binaries (`@prisma/client`, `playwright`, `mammoth`, `nodemailer`) resolve normally at runtime — no bundler surprises.
 - **Renderer** is bundled by Vite; the typed `InternPulseApi` contract lives in `shared/api.ts` and is enforced on both sides.
 
 ## Prerequisites
@@ -129,7 +129,7 @@ npm run playwright:install   # downloads Chromium used by the automation agents
 npm run prisma:migrate       # creates/updates the local SQLite database
 ```
 
-Then fill in `.env` (or, better, set values in **Settings** inside the app â€” DB values override `.env`).
+Then fill in `.env` (or, better, set values in **Settings** inside the app — DB values override `.env`).
 
 ## Environment variables
 
@@ -139,11 +139,11 @@ Then fill in `.env` (or, better, set values in **Settings** inside the app â€
 | `GEMINI_API_KEY` | recommended | Google AI Studio key (free tier) for cover letters & answers |
 | `GEMINI_MODEL` | optional | default `gemini-1.5-flash` (auto-falls back to `gemini-2.0-flash`/`gemini-2.5-flash`) |
 | `JOOBLE_API_KEY` | optional | free key from https://jooble.org/api |
-| `GREENHOUSE_BOARDS` | optional | comma list, e.g. `gitlab,stripe` â€” replaces the curated default board list |
+| `GREENHOUSE_BOARDS` | optional | comma list, e.g. `gitlab,stripe` — replaces the curated default board list |
 | `LEVER_COMPANIES` | optional | comma list, e.g. `palantir` |
 | `ASHBY_BOARDS` | optional | comma list, e.g. `notion,perplexity` |
 | `WORKDAY_TENANTS` | optional | comma list of `TENANT:SITE`, e.g. `acme:External` |
-| `SMTP_HOST` / `SMTP_PORT` / `SMTP_SECURE` / `SMTP_USER` / `SMTP_PASS` / `SMTP_FROM` | for email apply | any SMTP provider (Gmail app password, Mailgun, SES, â€¦) |
+| `SMTP_HOST` / `SMTP_PORT` / `SMTP_SECURE` / `SMTP_USER` / `SMTP_PASS` / `SMTP_FROM` | for email apply | any SMTP provider (Gmail app password, Mailgun, SES, …) |
 | `MS_CLIENT_ID` | for Outlook | Azure app (public client) ID |
 | `MS_TENANT_ID` | optional | default `common` |
 | `MS_SCOPES` | optional | default `User.Read,Mail.Read,Mail.Send` |
@@ -184,9 +184,9 @@ npm run smoke        # headless end-to-end check of parser/matcher/scrapers/DB
 ## Building installers
 
 ```bash
-npm run dist:win     # â†’ release/internpulse-ai-<v>-win-x64-setup.exe   (NSIS)
-npm run dist:mac     # â†’ release/internpulse-ai-<v>-mac-{x64,arm64}.dmg
-npm run dist:linux   # â†’ release/internpulse-ai-<v>-linux-x86_64.{AppImage,deb}
+npm run dist:win     # → release/internpulse-ai-<v>-win-x64-setup.exe   (NSIS)
+npm run dist:mac     # → release/internpulse-ai-<v>-mac-{x64,arm64}.dmg
+npm run dist:linux   # → release/internpulse-ai-<v>-linux-x86_64.{AppImage,deb}
 ```
 
 macOS builds require a Mac; Linux targets can be produced on any OS. The
@@ -201,7 +201,7 @@ Configuration lives in `electron-builder.yml` (asar enabled; Prisma engines, Pla
 
 Installers are unsigned until a certificate is configured. See
 [docs/CODE_SIGNING.md](docs/CODE_SIGNING.md) for the Windows (Azure Trusted
-Signing or PFX) and macOS signing setup â€” the CI workflow signs
+Signing or PFX) and macOS signing setup — the CI workflow signs
 automatically once the `WIN_CSC_LINK`/`WIN_CSC_PASSWORD` (or Apple)
 secrets are set.
 
@@ -210,21 +210,21 @@ secrets are set.
 Installers are attached to the **GitHub Releases** of this repository and linked from https://intern-pulse-ai.vercel.app:
 
 - **Latest (v1.0.3)**: https://github.com/Bolu-Tife-dev/InternPulse-AI/releases/latest
-  - `internpulse-ai-1.0.3-win-x64-setup.exe` â€” Windows 10 (64-bit)+
-  - `internpulse-ai-1.0.3-mac-arm64.dmg` / `internpulse-ai-1.0.3-mac-x64.dmg` â€” macOS 12+
-  - `internpulse-ai-1.0.3-linux-x86_64.AppImage` / `internpulse-ai-1.0.3-linux-amd64.deb` â€” any modern 64-bit distro
+  - `internpulse-ai-1.0.3-win-x64-setup.exe` — Windows 10 (64-bit)+
+  - `internpulse-ai-1.0.3-mac-arm64.dmg` / `internpulse-ai-1.0.3-mac-x64.dmg` — macOS 12+
+  - `internpulse-ai-1.0.3-linux-x86_64.AppImage` / `internpulse-ai-1.0.3-linux-amd64.deb` — any modern 64-bit distro
 - macOS and Linux installers are produced by the Release CI workflow on every version tag.
 
-> **Windows**: the installer is not code-signed yet â€” SmartScreen may warn on first run; choose â€œMore info â†’ Run anywayâ€. **macOS**: the DMG is unsigned â€” right-click â†’ Open on first launch. **Linux**: `chmod +x` the AppImage before running.
+> **Windows**: the installer is not code-signed yet — SmartScreen may warn on first run; choose “More info → Run anyway”. **macOS**: the DMG is unsigned — right-click → Open on first launch. **Linux**: `chmod +x` the AppImage before running.
 
 ## How the auto-apply engine works
 
-1. You select listings on **Discover** â†’ *Approve & Trigger Auto-Apply*.
+1. You select listings on **Discover** → *Approve & Trigger Auto-Apply*.
 2. For each job the engine:
    - loads your profile and latest CV/cover letter,
    - asks Gemini for a tailored cover letter (falls back to your stored letter),
    - picks a strategy: `FORM` for Greenhouse/Lever/Ashby/BambooHR/Workday, `EMAIL` when an application address is present,
-   - **FORM**: launches Chromium, opens the posting, clicks *Apply*, fills known ATS fields, uploads your CV, answers free-text questions with Gemini (â‰¤ 8 questions), submits, then captures a screenshot and any confirmation reference,
+   - **FORM**: launches Chromium, opens the posting, clicks *Apply*, fills known ATS fields, uploads your CV, answers free-text questions with Gemini (≤ 8 questions), submits, then captures a screenshot and any confirmation reference,
    - **EMAIL**: sends the letter + CV attachment via SMTP, or via Microsoft Graph when SMTP is not configured,
    - writes an `Application` row (status, strategy, cover letter, answers, confirmation, screenshot path) and marks the job approved,
    - waits `APPLY_DELAY_MS` before the next job.
@@ -232,9 +232,9 @@ Installers are attached to the **GitHub Releases** of this repository and linked
 
 ## Outlook / Microsoft Graph sync
 
-1. In Azure Portal â†’ App registrations â†’ new registration (public client), enable **Allow public client flows**, add delegated permissions `User.Read`, `Mail.Read`, `Mail.Send`.
-2. Paste the client ID in **Settings** â†’ save.
-3. **Applications â†’ Connect Outlook** â€” a device-code + URL is shown; complete it in any browser.
+1. In Azure Portal → App registrations → new registration (public client), enable **Allow public client flows**, add delegated permissions `User.Read`, `Mail.Read`, `Mail.Send`.
+2. Paste the client ID in **Settings** → save.
+3. **Applications → Connect Outlook** — a device-code + URL is shown; complete it in any browser.
 4. **Sync inbox now** (or wait for the scheduler) to classify replies and promote application statuses.
 
 ## Testing
@@ -248,7 +248,7 @@ npm run smoke
 ## Project structure
 
 ```
-electron/                 main process (tsc â†’ dist/main)
+electron/                 main process (tsc → dist/main)
   main.ts                 app lifecycle, window, scheduler
   preload.ts              contextBridge API (window.internpulse)
   ipc/index.ts            typed IPC handlers
@@ -277,11 +277,11 @@ electron-builder.yml      packaging (NSIS / DMG / AppImage)
 | --- | --- |
 | `Prisma Client could not locate the Query Engine` after packaging | engines are `asarUnpack`ed in `electron-builder.yml`; rebuild with `npm run dist:win` after changing it |
 | `Playwright browser not found` | run `npm run playwright:install` on the machine that runs the app |
-| No jobs found | add a Jooble key, add ATS boards in Settings, or run a search later â€” boards post interns in cycles; check the per-source chips on Discover for HTTP errors |
+| No jobs found | add a Jooble key, add ATS boards in Settings, or run a search later — boards post interns in cycles; check the per-source chips on Discover for HTTP errors |
 | Gemini errors | verify `GEMINI_API_KEY`; the app automatically falls back to newer model IDs and, failing that, your stored cover letter |
 | Email apply fails | configure SMTP (host/port/user/pass) or sign in to Outlook; the failure detail is stored on the Application row |
-| Outlook shows nothing | employer replies must arrive in the connected mailbox; matching uses company name + â‰¥ 2 title tokens |
+| Outlook shows nothing | employer replies must arrive in the connected mailbox; matching uses company name + ≥ 2 title tokens |
 
 ## License
 
-MIT â€” see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
