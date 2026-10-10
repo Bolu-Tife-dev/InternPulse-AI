@@ -195,7 +195,8 @@ Configuration lives in `electron-builder.yml` (asar enabled; Prisma engines, Pla
 
 Pre-built installers are published on the **GitHub Releases** page of the landing-page repository and linked from https://intern-pulse-ai.vercel.app:
 
-- **Windows**: `InternPulse-AI-<version>-win-x64-setup.exe` (NSIS installer, x64)
+- **Windows v1.0.0**: [`InternPulse-AI-1.0.0-win-x64-setup.exe`](https://github.com/Bolu-Tife-dev/InternPulse-AI-Website/releases/download/v1.0.0/InternPulse-AI-1.0.0-win-x64-setup.exe) — 101.8 MB, Windows 10 (64-bit)+, SHA-256 `B0CCAADAB6264FE4A5C7494C610F82D9C7D06D6B10F67EF28A22AAD9D196B46E`
+- **All releases**: https://github.com/Bolu-Tife-dev/InternPulse-AI-Website/releases/latest
 - macOS / Linux builds can be produced with `npm run dist:mac` / `npm run dist:linux`.
 
 > Windows SmartScreen may warn on first run because the installer is not code-signed — choose “More info → Run anyway” if you trust the build, or sign it with your own certificate (`win.certificateFile` in `electron-builder.yml`).
