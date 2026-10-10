@@ -27,7 +27,11 @@ export function appRoot(): string {
   if (cachedRoot) return cachedRoot;
   const app = electronApp();
   if (app?.isPackaged) {
-    cachedRoot = path.dirname(app.getAppPath());
+    // app.getAppPath() points at <install>/resources/app.asar, which is the
+    // virtual root containing package.json, dist/ and prisma/. Electron's
+    // patched fs resolves reads inside the asar transparently. Using
+    // dirname() here would point at resources/ and break loadFile/preload.
+    cachedRoot = app.getAppPath();
   } else if (app) {
     // dev: this file lives at <root>/dist/main/electron/paths.js
     cachedRoot = path.resolve(__dirname, '..', '..', '..');

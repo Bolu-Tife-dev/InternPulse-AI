@@ -48,6 +48,9 @@ jobs:
       - name: Package installer
         run: npx electron-builder --win --publish never
 
+      - name: Verify packaged app contents
+        run: node scripts/verify-package.js release/win-unpacked
+
       - name: Verify Authenticode signature
         shell: pwsh
         run: |
@@ -101,6 +104,9 @@ jobs:
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
 
+      - name: Verify packaged app contents
+        run: node scripts/verify-package.js release
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -144,6 +150,9 @@ jobs:
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
 
+      - name: Verify packaged app contents
+        run: node scripts/verify-package.js release
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -171,6 +180,9 @@ jobs:
 
       - name: Package AppImage + deb
         run: npx electron-builder --linux --publish never
+
+      - name: Verify packaged app contents
+        run: node scripts/verify-package.js release/linux-unpacked
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
