@@ -207,12 +207,13 @@ secrets are set.
 
 ## Downloading the app
 
-Pre-built installers are published on the **GitHub Releases** page of the landing-page repository and linked from https://intern-pulse-ai.vercel.app:
+Installers are attached to the **GitHub Releases** of this repository and linked from https://intern-pulse-ai.vercel.app:
 
-- **All releases**: https://github.com/Bolu-Tife-dev/InternPulse-AI-Website/releases/latest
-- **v1.0.1**: `internpulse-ai-1.0.1-win-x64-setup.exe`,
-  `internpulse-ai-1.0.1-mac-{x64,arm64}.dmg`,
-  `internpulse-ai-1.0.1-linux-x86_64.{AppImage,deb}` (built by CI on tag push)
+- **Latest (v1.0.1)**: https://github.com/Bolu-Tife-dev/InternPulse-AI/releases/latest
+  - `internpulse-ai-1.0.1-win-x64-setup.exe` — Windows 10 (64-bit)+
+  - `internpulse-ai-1.0.1-mac-arm64.dmg` / `internpulse-ai-1.0.1-mac-x64.dmg` — macOS 12+
+  - `internpulse-ai-1.0.1-linux-x86_64.AppImage` / `internpulse-ai-1.0.1-linux-amd64.deb` — any modern 64-bit distro
+- macOS and Linux installers are produced by the Release CI workflow on every version tag.
 
 > **Windows**: the installer is not code-signed yet — SmartScreen may warn on first run; choose “More info → Run anyway”. **macOS**: the DMG is unsigned — right-click → Open on first launch. **Linux**: `chmod +x` the AppImage before running.
 
